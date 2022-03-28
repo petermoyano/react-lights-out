@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import chanceLightStartsOn from "./helpers";
 import Cell from "./Cell";
 import "./Board.css";
 
@@ -27,20 +28,33 @@ import "./Board.css";
  *
  **/
 
-function Board({ nrows, ncols, chanceLightStartsOn }) {
+function Board({ nrows = 5, ncols = 5, chanceLightStartsOn }) {
   const [board, setBoard] = useState(createBoard());
 
   /** create a board nrows high/ncols wide, each cell randomly lit or unlit */
   function createBoard() {
     let initialBoard = [];
     // TODO: create array-of-arrays of true/false values
+    for (let i = 0; i < nrows; i++) {
+      initialBoard.push([]);
+      for (let j = 0; j < ncols; j++) {
+        initialBoard[i].push(chanceLightStartsOn)
+      }
+    }
     return initialBoard;
   }
 
   function hasWon() {
     // TODO: check the board in state to determine whether the player has won.
+    for (let i = 0; i < nrows; i++) {
+      for (let j = 0; j < ncols; j++) {
+        if (initialBoard[i][j] === false) {
+          return false
+        }
+      }
+    }
+    return true
   }
-
   function flipCellsAround(coord) {
     setBoard(oldBoard => {
       const [y, x] = coord.split("-").map(Number);
